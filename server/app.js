@@ -1,29 +1,17 @@
 var express=require('express'),
 	app=express(),
-	Sequelize=require('sequelize'),
-	sequelize=new Sequelize('workoutlog','postgres','nienpass1234',{
-		host:'localhost',
-		dialect:'postgres'
-	}),
-	bodyParser=require('body-parser');
+	bodyParser=require('body-parser'),
+	sequelize=require('./db.js');
 app.use('/api/test',(req,res)=>{
 	res.send("Hello World");
 });
 
-sequelize.authenticate().then(
-	function(){
-		console.log('connected to DB')
-	},console.log
-);
 app.use(require('./middleware/headers'));
 app.listen(3000,()=>{//listen to port 3000 http requests
 	console.log("APP IS OPENING PORT 3000")
 });
 
-var User=sequelize.define('user',{
-	username:Sequelize.STRING,	
-	passwordhash:Sequelize.STRING
-});
+var User=sequelize.import('./models/user');
 User.sync();
 // User.sync({force:true}); //Used to force drop a table
 app.use(bodyParser.json());
