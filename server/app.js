@@ -1,7 +1,7 @@
 var express=require('express'),
 	app=express(),
 	Sequelize=require('sequelize'),
-	sequelize=new Sequelize('workoutlog','postgres','neinpass1234',{
+	sequelize=new Sequelize('workoutlog','postgres','nienpass1234',{
 		host:'localhost',
 		dialect:'postgres'
 	}),
@@ -9,23 +9,8 @@ var express=require('express'),
 app.use('/api/test',(req,res)=>{
 	res.send("Hello World");
 });
-app.use(bodyParser.json());
-app.post('/api/user',(req,res)=>{
-	let username=req.body.user.username,
-		pass=req.body.user.password;
-		User.create({
-			username:username,
-			passwordhash:""
-		}).then((user)=>{
-			res.json({
-				user:user,
-				message:'create'
-			})
-		},(err)=>{
-			res.send(500,err.message)
-		})
-})
-sequelize.authenticate.then(
+
+sequelize.authenticate().then(
 	function(){
 		console.log('connected to DB')
 	},console.log
@@ -41,3 +26,21 @@ var User=sequelize.define('user',{
 });
 User.sync();
 // User.sync({force:true}); //Used to force drop a table
+app.use(bodyParser.json());
+app.post('/api/user',(req,res)=>{
+	let username=req.body.user.username,
+		pass=req.body.user.password;
+		User.create({
+			username:username,
+			passwordhash:""
+		}).then((user)=>{
+			console.log(user);
+			res.json({
+				user:user,
+				message:'create'
+			});
+		},(err)=>{
+			console.log(err)
+			res.send(500,err.message);
+		})
+})
