@@ -10,7 +10,7 @@ router.post('/',(req,res)=>{
 		username:username,
 		passwordhash:bcrypt.hashSync(pass,10)
 	}).then((user)=>{
-		let token=jwt.sign({id:user.id},"i_am_secret",{expiresIn:60*60*24});
+		let token=jwt.sign({id:user.id},process.env.JWT_SECERT,{expiresIn:60*60*24});
 		res.json({
 			user:user,
 			message:'create',
