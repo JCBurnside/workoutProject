@@ -15,4 +15,5 @@ var User=sequelize.import('./models/user');
 User.sync();
 // User.sync({force:true}); //Used to force drop a table
 app.use(bodyParser.json());
-app.use('/api/user',require('./routes/user.js'))
+app.use('/api/user',require('./routes/user.js'));
+app.use('/api/login',require('./routes/session.js'))
