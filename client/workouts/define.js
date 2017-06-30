@@ -1,0 +1,35 @@
+$(()=>{
+	$.extend(WorkoutLog,{
+		definition:{
+			userDefinitions:[],
+			create:()=>{
+				var def={
+					desc:$('#def-desc').val(),
+					type:$('#def-type').val()
+				};
+				$.ajax({
+					type:"POST",
+					url:WorkoutLog.API_BASE+"definition",
+					data:JSON.stringify({definition:def}),
+					contentType:"application/json"
+				}).done(data=>{
+					WorkoutLog.definition.userDefinitions.push(data.definition);
+				});
+			},
+			fetchAll:()=>{
+				$.ajax({
+					type:"GET",
+					url:WorkoutLog.API_BASE+"definition",
+					headers:{
+						"authorization":window.localStorage.getItem("sessionToken")
+					}
+				}).done(data=>{
+					WorkoutLog.definition.userDefinitions=data;
+				}).fail(console.log);
+			}
+		}
+	});
+	//bindings
+	$('#def-save').click(WorkoutLog.definition.create);
+	if(window.localStorage.getItem("sessionToken"))WorkoutLog.definition.fetchAll();
+})
