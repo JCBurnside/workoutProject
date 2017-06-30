@@ -3,6 +3,7 @@ var express=require('express'),
 	app=express(),
 	bodyParser=require('body-parser'),
 	sequelize=require('./db.js');
+	process.env.JWT_SECERT=require('./config/constants.js').JWT_SECERT
 app.use('/api/test',(req,res)=>{
 	res.send("Hello World");
 });
@@ -14,7 +15,7 @@ app.listen(3000,()=>{//listen to port 3000 http requests
 });
 
 var User=sequelize.import('./models/user');
-User.sync();
+sequelize.sync();
 // User.sync({force:true}); //Used to force drop a table
 app.use(bodyParser.json());
 app.use('/api/user',require('./routes/user.js'));

@@ -8,6 +8,7 @@ router.post('/',(req,res)=>{
 		if(user){
 			bcrypt.compare(req.body.user.password,user.passwordhash,(err,matches)=>{
 				if(matches){
+					console.log("SESSION")
 					let token=jwt.sign({id:user.id},process.env.JWT_SECRET,{expiresIn:60*60*24});
 					res.json({
 						user:user,

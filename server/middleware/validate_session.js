@@ -4,6 +4,7 @@ let jwt=require('jsonwebtoken'),
 module.exports=(req,res,next)=>{
 	let sessionToken=req.headers.authorization;
 	if(!req.user&&sessionToken){
+		console.log("VAILIDATE");
 		jwt.verify(sessionToken,process.env.JWT_SECRET,(err,decoded)=>{
 			if(decoded){
 				User.findOne({where:{Id:decoded.Id}}).then(user=>{
