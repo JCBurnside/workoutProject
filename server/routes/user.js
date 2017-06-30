@@ -4,14 +4,15 @@ var router=require('express').Router(),
 	bcrypt=require('bcryptjs'),
 	jwt=require('jsonwebtoken');
 router.post('/',(req,res)=>{
-	var username=req.user.username,
+	for(attr in req.body)console.log(attr)
+	var username=req.body.user.username,
 		pass=req.body.user.password;
 	User.create({
 		username:username,
 		passwordhash:bcrypt.hashSync(pass,10)
 	}).then((user)=>{
-		console.log("POST");
-		var token=jwt.sign({id:user.id},process.env.JWT_SECERT,{expiresIn:60*60*24});
+		console.log("POST!!!");
+		var token=jwt.sign({id:user.id},process.env.JWT_SECRET,{expiresIn:60*60*24});
 		res.json({
 			user:user,
 			message:'create',

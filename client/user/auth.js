@@ -5,24 +5,26 @@ $(()=>{
 			let username=$('#su_username').val(),
 				password=$('#su_password').val();
 			var user={
-				username:username,
-				password:password
+				user:{
+					username:username,
+					password:password
+				}
 			};
-
 			// post method
-			$.ajax({
+			console.log(JSON.stringify(user))
+			var singup=$.ajax({
 				type:"POST",
 				url:WorkoutLog.API_BASE+"user",
-				data:JSON.stringify(user),
+				data: JSON.stringify(user),
 				contentType:"application/json"
-			})
-			.done((data)=>{
+			});
+			singup.done((data)=>{
 				if(data.sessionToken) WorkoutLog.setAuthHeader(data.sessionToken);
 				$('#signup-modal').modal('hide');
 				$('.disabled').removeClass('disabled');
-				$('#loginout').test('logout');
+				$('#loginout').text('logout');
 			})
-			.fail(()=>{$('#su_error').text('There was an issue with sign up').show();});
+			.fail(e=>{$('#su_error').text('There was an issue with sign up').show();});
 
 		},
 		// login method
@@ -50,9 +52,12 @@ $(()=>{
 			.fail(()=>$('#li_error').text("WHOOPS! Something went wrong").show());
 		},
 		loginout:()=>{
-
+			if(window.localStorage.getItem("sessionToken")){
+				window.localStorage.removeItem("sessionToken");
+				$('#loginout').text("Login");
+			}
+			//TODO:on Logout DISABLE STUFF
 		}
-		// logout method
 
 	});
 	//bind events
