@@ -18,6 +18,7 @@ app.use(require('./middleware/validate_session'));
 app.use('/api/user',require('./routes/user.js'));
 app.use('/api/login',require('./routes/session.js'));
 app.use('/api/definition',require('./routes/definition.js'));
+app.use('/api/log',require('./routes/log.js'));
 app.listen(3000,()=>{//listen to port 3000 http requests
 	console.log("APP IS OPENING PORT 3000")
 });
